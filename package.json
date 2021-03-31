@@ -1,14 +1,14 @@
 {
-  "name": "nodejs-basic",
-  "version": "1.0.0",
-  "description": "Simple nodejs project",
-  "main": "server.js",
-  "scripts": {
-    "start": "nodemon server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "Nodejs"
-  ],
-  "author": "Zaman"
+    "name": "nodejs-basic",
+    "version": "1.0.0",
+    "description": "Simple nodejs project",
+    "main": "server.js",
+    "scripts": {
+        "start": "nodemon server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "Nodejs"
+    ],
+    "author": "Zaman"
 }
