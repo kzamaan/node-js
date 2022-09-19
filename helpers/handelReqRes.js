@@ -1,9 +1,9 @@
-//dependency
+// dependency
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
 const routes = require('../routes');
 const { notFoundHandler } = require('../handlers/routeHandlers/notFoundHandler');
-//handel object - module scaffolding
+// handel object - module scaffolding
 const handler = {};
 
 handler.handleReqRes = (req, res) => {
@@ -26,10 +26,10 @@ handler.handleReqRes = (req, res) => {
     const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
 
     chosenHandler(requestProperties, (statusCode, payload) => {
-        statusCode = typeof statusCode === 'number' ? statusCode : 500;
+        const status = typeof statusCode === 'number' ? statusCode : 500;
         const payloadString = typeof payload === 'object' ? JSON.stringify(payload) : {};
 
-        res.writeHead(statusCode);
+        res.writeHead(status);
         res.end(payloadString);
     });
 

@@ -11,6 +11,18 @@
         "no-console": 0,
         "indent": 0,
         "linebreak-style": 0,
+        "operator-linebreak": [
+            "error",
+            "after",
+            {
+                "overrides": {
+                    ":": "before",
+                    "?": "before",
+                    "||": "before",
+                    "&&": "before"
+                }
+            }
+        ],
         "prettier/prettier": [
             "error",
             {
@@ -18,7 +30,8 @@
                 "singleQuote": true,
                 "printWidth": 100,
                 "tabWidth": 4,
-                "semi": true
+                "semi": true,
+                "endOfLine": "auto"
             }
         ]
     },
