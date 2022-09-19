@@ -1,11 +1,9 @@
 //dependency
-const { sampleHandler } = require('./handlers/routeHandlers/sampleHandler')
+const { sampleHandler } = require('./handlers/routeHandlers/sampleHandler');
 
 //routes object - module scaffolding
 const routes = {
-    sample : sampleHandler
-}
+    sample: sampleHandler,
+};
 
-
-
-module.exports = routes
+module.exports = routes;
