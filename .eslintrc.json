@@ -18,8 +18,7 @@
                 "overrides": {
                     ":": "before",
                     "?": "before",
-                    "||": "before",
-                    "&&": "before"
+                    "||": "before"
                 }
             }
         ],
