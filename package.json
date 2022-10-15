@@ -1,10 +1,10 @@
 {
-    "name": "nodejs-basic",
+    "name": "node-basic",
     "version": "1.0.0",
     "description": "Simple nodejs project",
-    "main": "server.js",
+    "main": "index.js",
     "scripts": {
-        "start": "nodemon server",
+        "start": "nodemon index",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
