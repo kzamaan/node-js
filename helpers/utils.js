@@ -2,8 +2,9 @@
  * @Author: Kamruzzaman
  * @Date: 2022-10-16 10:00:38
  * @Last Modified by: Kamruzzaman
- * @Last Modified time: 2022-10-16 11:28:44
+ * @Last Modified time: 2022-10-16 22:15:03
  */
+const crypto = require('crypto');
 
 // module scaffolding
 const utils = {};
@@ -50,6 +51,14 @@ utils.parseJSON = (jsonString) => {
     }
 
     return output;
+};
+
+utils.hash = (str) => {
+    if (typeof str === 'string' && str.length > 0) {
+        const hash = crypto.createHmac('sha256', 'secret').update(str).digest('hex');
+        return hash;
+    }
+    return false;
 };
 
 module.exports = utils;

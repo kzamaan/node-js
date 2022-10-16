@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+const library = require('../../library/data');
+const { hash } = require('../../helpers/utils');
 // module scaffolding
 const handler = {};
 
@@ -43,14 +45,37 @@ handler._users.post = (requestProperties, callback) => {
 
     const password =
         typeof requestProperties.body.password === 'string' &&
-            requestProperties.body.password.trim().length === 11
+            requestProperties.body.password.trim().length > 0
             ? requestProperties.body.password
             : false;
 
 
     if (fullName && email && phone && password) {
-        callback(200, {
-            message: 'user is valid',
+        library.read('users', phone, (err, user) => {
+            console.log(err);
+            if (!err) {
+                callback(400, {
+                    message: 'The user already exists',
+                });
+            } else {
+                const userObject = {
+                    fullName,
+                    email,
+                    phone,
+                    password: hash(password),
+                };
+                library.create('users', phone, userObject, (error) => {
+                    if (!error) {
+                        callback(200, {
+                            message: 'User created successfully',
+                        });
+                    } else {
+                        callback(500, {
+                            message: 'There was a server side error',
+                        });
+                    }
+                });
+            }
         });
     } else {
         callback(400, {
