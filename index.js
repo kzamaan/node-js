@@ -1,5 +1,14 @@
+/*
+ * @Author: Kamruzzaman
+ * @Date: 2022-10-16 09:59:59
+ * @Last Modified by:   Kamruzzaman
+ * @Last Modified time: 2022-10-16 09:59:59
+ */
+
 const http = require('http');
 const { handleReqRes } = require('./helpers/handelReqRes');
+const environment = require('./helpers/environments');
+
 // app object - module scaffolding
 const app = {};
 
@@ -11,8 +20,8 @@ app.config = {
 // create server
 app.createServer = () => {
     const server = http.createServer(app.handleReqRes);
-    server.listen(app.config.port, () => {
-        console.log(`listening to port http://localhost:${app.config.port}`);
+    server.listen(environment.port, () => {
+        console.log(`listening to port http://localhost:${environment.port}`);
     });
 };
 

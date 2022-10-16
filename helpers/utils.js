@@ -1,3 +1,11 @@
+/*
+ * @Author: Kamruzzaman
+ * @Date: 2022-10-16 10:00:38
+ * @Last Modified by:   Kamruzzaman
+ * @Last Modified time: 2022-10-16 10:00:38
+ */
+
+// module scaffolding
 const handler = {};
 
 handler.isObject = (obj) => typeof obj === 'object' && obj !== null;

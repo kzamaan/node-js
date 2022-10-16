@@ -1,3 +1,11 @@
+/*
+ * @Author: Kamruzzaman
+ * @Date: 2022-10-15 23:58:28
+ * @Last Modified by: Kamruzzaman
+ * @Last Modified time: 2022-10-15 23:59:39
+ */
+
+// module scaffolding
 const environments = {};
 
 environments.staging = {
