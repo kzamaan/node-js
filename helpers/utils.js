@@ -2,7 +2,7 @@
  * @Author: Kamruzzaman
  * @Date: 2022-10-16 10:00:38
  * @Last Modified by: Kamruzzaman
- * @Last Modified time: 2022-10-16 22:15:03
+ * @Last Modified time: 2023-02-09 13:41:06
  */
 const crypto = require('crypto');
 
@@ -59,6 +59,17 @@ utils.hash = (str) => {
         return hash;
     }
     return false;
+};
+
+utils.createRandomString = (strLength) => {
+    const length = typeof strLength === 'number' && strLength > 0 ? strLength : false;
+    const randomString = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let generatedString = '';
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < length; i++) {
+        generatedString += randomString.charAt(Math.floor(Math.random() * randomString.length));
+    }
+    return generatedString;
 };
 
 module.exports = utils;

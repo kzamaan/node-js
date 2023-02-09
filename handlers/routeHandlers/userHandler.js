@@ -2,6 +2,7 @@
 
 const library = require('../../library/data');
 const { hash, parseJSON } = require('../../helpers/utils');
+const tokenHandler = require('./tokenHandler');
 // module scaffolding
 const handler = {};
 
@@ -25,15 +26,33 @@ handler._users.get = (requestProperties, callback) => {
             : false;
 
     if (phone) {
-        library.read('users', phone, (err, user) => {
-            if (!err && user) {
-                callback(200, parseJSON(user));
+        // verify token
+        const token =
+            typeof requestProperties.headersObject.token === 'string'
+                ? requestProperties.headersObject.token
+                : false;
+
+        tokenHandler._tokens.verify(token, phone, (tokenIsValid) => {
+            if (tokenIsValid) {
+                library.read('users', phone, (err, user) => {
+                    if (!err && user) {
+                        const userObject = { ...parseJSON(user) };
+                        delete userObject.password;
+                        callback(200, userObject);
+                    } else {
+                        callback(404, {
+                            message: 'User not found',
+                        });
+                    }
+                });
             } else {
-                callback(404, {
-                    message: 'User not found',
+                callback(403, {
+                    error: 'Authentication failure!',
                 });
             }
         });
+
+
     } else {
         library.list('users', (err, users) => {
             if (!err && users) {
@@ -148,17 +167,33 @@ handler._users.put = (requestProperties, callback) => {
                 if (password) {
                     userData.password = hash(password);
                 }
-                // store to database
-                library.update('users', phone, userData, (err2) => {
-                    if (!err2) {
-                        callback(200, {
-                            message: 'User was updated successfully!',
+                // verify token
+                const token =
+                    typeof requestProperties.headersObject.token === 'string'
+                        ? requestProperties.headersObject.token
+                        : false;
+
+                tokenHandler._tokens.verify(token, phone, (tokenIsValid) => {
+                    if (tokenIsValid) {
+                        // store to database
+                        library.update('users', phone, userData, (err2) => {
+                            if (!err2) {
+                                callback(200, {
+                                    message: 'User was updated successfully!',
+                                    user: userData,
+                                });
+                            } else {
+                                callback(500, {
+                                    error: 'There was a problem in the server side!',
+                                });
+                            }
                         });
                     } else {
-                        callback(500, {
-                            error: 'There was a problem in the server side!',
+                        callback(403, {
+                            error: 'Authentication failure!',
                         });
                     }
+
                 });
             } else {
                 callback(400, {
@@ -180,32 +215,47 @@ handler._users.delete = (requestProperties, callback) => {
             requestProperties.body.phone.trim().length === 11
             ? requestProperties.body.phone
             : false;
+    // verify token
+    const token =
+        typeof requestProperties.headersObject.token === 'string'
+            ? requestProperties.headersObject.token
+            : false;
 
-    if (phone) {
-        library.read('users', phone, (err, user) => {
-            if (!err && user) {
-                library.delete('users', phone, (err2) => {
-                    if (!err2) {
-                        callback(200, {
-                            message: 'User deleted successfully',
+    tokenHandler._tokens.verify(token, phone, (tokenIsValid) => {
+        if (tokenIsValid) {
+            if (phone) {
+                library.read('users', phone, (err, user) => {
+                    if (!err && user) {
+                        library.delete('users', phone, (err2) => {
+                            if (!err2) {
+                                callback(200, {
+                                    message: 'User deleted successfully',
+                                });
+                            } else {
+                                callback(500, {
+                                    message: 'There was a server side error',
+                                });
+                            }
                         });
                     } else {
-                        callback(500, {
-                            message: 'There was a server side error',
+                        callback(404, {
+                            message: 'User not found',
                         });
                     }
                 });
             } else {
-                callback(404, {
-                    message: 'User not found',
+                callback(400, {
+                    message: 'There was a problem in your request',
                 });
             }
-        });
-    } else {
-        callback(400, {
-            message: 'There was a problem in your request',
-        });
-    }
+        } else {
+            callback(403, {
+                error: 'Authentication failure!',
+            });
+        }
+    });
+
+
 };
 
 module.exports = handler;

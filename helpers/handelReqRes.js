@@ -2,7 +2,7 @@
  * @Author: Kamruzzaman
  * @Date: 2022-10-16 10:00:27
  * @Last Modified by: Kamruzzaman
- * @Last Modified time: 2022-10-16 20:20:46
+ * @Last Modified time: 2023-02-09 13:47:01
  */
 
 // dependency
@@ -31,6 +31,7 @@ handler.handleReqRes = (request, response) => {
         queryStringObject,
         headersObject,
     };
+    console.log('Requested Path', trimmedPath);
 
     const decoder = new StringDecoder('utf-8');
     let realData = '';
