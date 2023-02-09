@@ -1,8 +1,8 @@
 /*
  * @Author: Kamruzzaman
  * @Date: 2022-10-16 10:00:10
- * @Last Modified by:   Kamruzzaman
- * @Last Modified time: 2022-10-16 10:00:10
+ * @Last Modified by: Kamruzzaman
+ * @Last Modified time: 2023-02-09 12:17:54
  */
 
 const fs = require('fs');
@@ -49,7 +49,6 @@ library.update = (dir, file, data, callback) => {
     fs.open(`${library.baseDir}${dir}/${file}.json`, 'r+', (err, fileDescriptor) => {
         if (!err && fileDescriptor) {
             const stringData = JSON.stringify(data);
-
             fs.ftruncate(fileDescriptor, (err2) => {
                 if (!err2) {
                     fs.writeFile(fileDescriptor, stringData, (err3) => {
@@ -82,6 +81,21 @@ library.delete = (dir, file, callback) => {
             callback(false);
         } else {
             callback('Error deleting file');
+        }
+    });
+};
+
+// list all the items in a directory
+library.list = (dir, callback) => {
+    fs.readdir(`${library.baseDir}${dir}/`, (err, fileNames) => {
+        if (!err && fileNames && fileNames.length > 0) {
+            const trimmedFileNames = [];
+            fileNames.forEach((fileName) => {
+                trimmedFileNames.push(fileName.replace('.json', ''));
+            });
+            callback(false, trimmedFileNames);
+        } else {
+            callback('Error reading directory!');
         }
     });
 };
