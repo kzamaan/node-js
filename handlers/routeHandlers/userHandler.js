@@ -35,8 +35,14 @@ handler._users.get = (requestProperties, callback) => {
             }
         });
     } else {
-        callback(400, {
-            message: 'There was a problem in your request',
+        library.list('users', (err, users) => {
+            if (!err && users) {
+                callback(200, users);
+            } else {
+                callback(404, {
+                    message: 'User not found',
+                });
+            }
         });
     }
 };
